@@ -97,9 +97,9 @@ def respond(sock):
             transmit(STATUS_FORBIDDEN, sock)
             transmit("Your request contained the string '..', or the string '~' which are invalid.\n", sock)
 
-        elif (os.path.isfile("../pages/" + parts[1])):
+        elif (os.path.isfile("../pages" + parts[1])):
             transmit(STATUS_OK, sock)
-            transmit("../pages/" + parts[1])
+            transmit("../pages" + parts[1])
         
         else:
             transmit(STATUS_NOT_FOUND, sock)
