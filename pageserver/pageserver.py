@@ -97,7 +97,7 @@ def respond(sock):
             transmit(STATUS_FORBIDDEN + "Your request contained the string '..', or the string '~' which are invalid.\n", sock)
 
         elif (os.path.isfile("pages" + parts[1])):
-            file = open("pages" + parts[1], 'rb')
+            file = open("pages" + parts[1], 'r')
             file_text = file.read()
             file.close()
             final = STATUS_OK + file_text
