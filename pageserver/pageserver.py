@@ -99,11 +99,10 @@ def respond(sock):
 
         elif (os.path.isfile("../pages" + parts[1])):
             transmit(STATUS_OK, sock)
-            transmit("../pages" + parts[1])
+            transmit("../pages" + parts[1], sock)
         
         else:
             transmit(STATUS_NOT_FOUND, sock)
-            transmit(parts[1], sock)
             transmit("Cannot find the page you have requested; Did you add file extension?\n", sock)
 
     else:
