@@ -103,6 +103,7 @@ def respond(sock):
         
         else:
             transmit(STATUS_NOT_FOUND, sock)
+            transmit(parts[1], sock)
             transmit("Cannot find the page you have requested; Did you add file extension?\n", sock)
 
     else:
