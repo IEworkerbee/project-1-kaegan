@@ -23,6 +23,8 @@ log = logging.getLogger(__name__)
 import socket    # Basic TCP/IP communication on the internet
 import _thread   # Response computation runs concurrently with main program
 
+import os
+
 
 def listen(portnum):
     """
@@ -65,7 +67,7 @@ def serve(sock, func):
 ##
 CAT = """
      ^ ^
-   =(   )=
+   =( w )=
 """
 
 # HTTP response codes, as the strings we will actually send.
@@ -91,8 +93,20 @@ def respond(sock):
 
     parts = request.split()
     if len(parts) > 1 and parts[0] == "GET":
-        transmit(STATUS_OK, sock)
-        transmit(CAT, sock)
+        if (".." in parts[1] or "~" in parts[1]):
+            transmit(STATUS_FORBIDDEN, sock)
+            transmit("Your request contained the string '..', or the string '~' which are invalid.\n", sock)
+
+        elif (os.path.isfile("pages/" + parts[1])):
+            transmit(STATUS_OK, sock)
+            transmit("pages/" + parts[1])
+        
+        else:
+            transmit(STATUS_NOT_FOUND, sock)
+            transmit("Cannot find the page you have requested; Did you add file extension?\n", sock)
+
+        #transmit(STATUS_OK, sock)
+        #transmit(CAT, sock)
     else:
         log.info("Unhandled request: {}".format(request))
         transmit(STATUS_NOT_IMPLEMENTED, sock)
