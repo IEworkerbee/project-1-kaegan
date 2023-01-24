@@ -94,17 +94,17 @@ def respond(sock):
     parts = request.split()
     if len(parts) > 1 and parts[0] == "GET":
         if (".." in parts[1] or "~" in parts[1]):
-            transmit("<h1>"+ STATUS_FORBIDDEN + "<h1>", "Your request contained the string '..', or the string '~' which are invalid.\n", sock)
+            transmit(STATUS_FORBIDDEN + "Your request contained the string '..', or the string '~' which are invalid.\n", sock)
 
         elif (os.path.isfile("pages" + parts[1])):
             file = open("pages" + parts[1], 'rb')
             file_text = file.read()
             file.close()
-
-            transmit(STATUS_OK + file_text, sock)
+            final = STATUS_OK + file_text
+            transmit(final, sock)
         
         else:
-            transmit("<h1>" + STATUS_NOT_FOUND + "<h1>" + "Cannot find the page you have requested; Did you add file extension?\n", sock)
+            transmit(STATUS_NOT_FOUND + "Cannot find the page you have requested; Did you add file extension?\n", sock)
 
     else:
         log.info("Unhandled request: {}".format(request))
