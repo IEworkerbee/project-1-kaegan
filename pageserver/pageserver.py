@@ -90,14 +90,15 @@ def respond(sock):
     request = str(request, encoding='utf-8', errors='strict')
     log.info("--- Received request ----")
     log.info("Request was {}\n***\n".format(request))
+    options = get_options()
 
     parts = request.split()
     if len(parts) > 1 and parts[0] == "GET":
         if (".." in parts[1] or "~" in parts[1]):
             transmit(STATUS_FORBIDDEN + "Your request contained the string '..', or the string '~' which are invalid.\n", sock)
 
-        elif (os.path.isfile("pages" + parts[1])):
-            file = open("pages" + parts[1], 'r')
+        elif (os.path.isfile(options.DOCROOT + parts[1])):
+            file = open(options.DOCROOT + parts[1], 'r')
             file_text = file.read()
             file.close()
             final = STATUS_OK + file_text
